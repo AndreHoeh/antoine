@@ -4,11 +4,12 @@ from typing import Callable
 class Wydget():
 
     COLOR_FILL = (100, 100, 100)
-    COLOR_STROKE = (10, 10, 10)
+    COLOR_STROKE = (180, 180, 180)
     RADIUS = 4
     STROKE_WIDTH = 1
 
-    def __init__(self, x: float, y: float, w: float, h: float) -> None:
+    def __init__(self, scene, x: float, y: float, w: float, h: float) -> None:
+        self._scene: pygame.Surface = scene
         self.rect = pygame.Rect((x, y), (w, h))
         self._hidden: bool = False
         self._active: bool = True
@@ -47,6 +48,13 @@ class Wydget():
             self.handle_on_leave()
             # evtl needs else release hgere
 
+    def draw(self):
+        if self._hidden:
+            return
+
+        if self._hovered:
+            pygame.draw.rect(self._scene, self.COLOR_FILL, self.rect, border_radius=self.RADIUS)
+
     def handle_on_click(self):
         print("click")
         if self.on_click:
@@ -75,41 +83,32 @@ class Wydget():
 
 
 class Button(Wydget):
-
-
     def __init__(self, scene, x: float, y: float, w: float = 10, h: float = 10, img = None):
-        super().__init__(x, y, w, h)
-        self._scene: pygame.Surface = scene
+        super().__init__(scene, x, y, w, h)
         self._img = img
         self.rect = pygame.Rect((x, y), (w, h))
         if self._img is not None:
             self.rect = pygame.Rect((x, y), self._img.get_rect().size)
 
-
     def draw(self):
         if self._hidden:
             return
-
+        super().draw()
         if self._img is not None:
             self._scene.blit(self._img, self.rect)
-            return
-
-        pygame.draw.rect(self._scene, self.COLOR_FILL, self.rect, border_radius=self.RADIUS)
-        if self.COLOR_STROKE:
-            pygame.draw.rect(
-                self._scene,
-                self.COLOR_STROKE,
-                self.rect,
-                border_radius=self.RADIUS,
-                width=self.STROKE_WIDTH,
-            )
+            # if self.COLOR_STROKE:
+            #     pygame.draw.rect(
+            #         self._scene,
+            #         self.COLOR_STROKE,
+            #         self.rect,
+            #         border_radius=self.RADIUS,
+            #         width=self.STROKE_WIDTH,
+            #     )
 
 class Toggle(Wydget):
     def __init__(self, scene, x: float, y: float, images):
-        super().__init__(x, y, 10, 10)
-        self._scene: pygame.Surface = scene
+        super().__init__(scene, x, y, 10, 10)
         self._images = images
-        # self._img = images[0]
         self.rect = pygame.Rect((x, y), self._images[0].get_rect().size)
         self._step_count = len(self._images)
         self.step = 0
@@ -117,6 +116,7 @@ class Toggle(Wydget):
     def draw(self):
         if self._hidden:
             return
+        super().draw()
         self._scene.blit(self._images[self.step], self.rect)
 
     def handle_on_click(self):

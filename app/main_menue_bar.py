@@ -10,13 +10,13 @@ class MainMenuBar():
         self.rect = pygame.Rect((0, 0), (self.app.scene.get_rect().width, 32))
         self.button_confirm = Button(self.app.scene, x = 0, y = 0, img=self.app.textures.confirm)
         self.button_confirm.on_click = lambda: pygame.event.post(pygame.event.Event(EVENT_CONFIRM))
-        self.button_cancel = Button(self.app.scene, x = 32, y = 0, img=self.app.textures.cancel)
+        self.button_cancel = Button(self.app.scene, x = 32+4, y = 0, img=self.app.textures.cancel)
         self.button_cancel.on_click = lambda: pygame.event.post(pygame.event.Event(EVENT_CANCEL))
-        self.button_direction = Toggle(self.app.scene, x = 64, y = 0, images=[self.app.textures.vertical, self.app.textures.horizontal])
+        self.button_direction = Toggle(self.app.scene, x = 2*(32+4), y = 0, images=[self.app.textures.vertical, self.app.textures.horizontal])
         self.button_direction.on_click = lambda: pygame.event.post(pygame.event.Event(EVENT_DIRECTION))
-        self.button_zoom_minus = Button(self.app.scene, x = 96, y = 0, img=self.app.textures.zoom_minus)
+        self.button_zoom_minus = Button(self.app.scene, x = 3*(32+4), y = 0, img=self.app.textures.zoom_minus)
         self.button_zoom_minus.on_click = lambda: pygame.event.post(pygame.event.Event(EVENT_ZOOM_MINUS))
-        self.button_zoom_plus = Button(self.app.scene, x = 128, y = 0, img=self.app.textures.zoom_plus)
+        self.button_zoom_plus = Button(self.app.scene, x = 4*(32+4), y = 0, img=self.app.textures.zoom_plus)
         self.button_zoom_plus.on_click = lambda: pygame.event.post(pygame.event.Event(EVENT_ZOOM_PLUS))
 
     def update(self):

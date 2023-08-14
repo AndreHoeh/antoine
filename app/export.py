@@ -10,7 +10,7 @@ def merge_vertical(images, out_path: str, out_file_name: str):
     for image in images:
         combined_image.paste(image, (0, current_height))
         current_height += image.size[1]
-    combined_image.save(join(out_path, f"{out_file_name}_combined.png"), "PNG")
+    combined_image.save(join(out_path, f"{out_file_name}_combined.jpeg"), "JPEG")
 
 
 def merge_horizontal(images, out_path: str, out_file_name: str):
