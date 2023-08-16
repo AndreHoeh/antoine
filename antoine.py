@@ -8,7 +8,7 @@ from PIL import Image
 from app.textures import Textures
 from app.main_menue_bar import MainMenuBar
 from app.export import merge_vertical, merge_horizontal
-from app.events import EVENT_CONFIRM, EVENT_CANCEL, EVENT_DIRECTION, EVENT_ZOOM_MINUS, EVENT_ZOOM_PLUS
+from app.events import EVENT_CONFIRM, EVENT_CANCEL
 
 SUPPORTED_IMAGE_TYPES = (".JPG", ".jpg", ".png")
 APPLICATION_NAME = "Antoine"
@@ -26,8 +26,6 @@ class App:
         self.images = []
         self.output_path: str = ""
         self.filename: str = ""
-        self.direction_vertical = True
-        self.scale = 1
 
         self.main_menu_bar = MainMenuBar(self)
 
@@ -39,9 +37,9 @@ class App:
         current_height: int = 32
         current_width: int = 0
         for surf in self.surfaces:
-            img = pygame.transform.scale_by(surf, self.scale)
+            img = pygame.transform.scale_by(surf, self.main_menu_bar.data.render_scale)
             self.scene.blit(img, (current_width, current_height))
-            if self.direction_vertical:
+            if self.main_menu_bar.data.direction_vertical:
                 current_height += img.get_height()
             else:
                 current_width += img.get_width()
@@ -72,12 +70,6 @@ class App:
                     print("DEBUG: Key Press Return")
                     self.merge()
                     self.clear_images()
-                elif event.key == pygame.K_m:
-                    print("DEBUG: scale minus")
-                    self.scale /= 2
-                elif event.key == pygame.K_p:
-                    print("DEBUG: scale plus")
-                    self.scale *= 2
             elif event.type == EVENT_CONFIRM:
                 print("DEBUG: Merge Button")
                 self.merge()
@@ -85,15 +77,7 @@ class App:
             elif event.type == EVENT_CANCEL:
                 print("DEBUG: Cancel Button")
                 self.clear_images()
-            elif event.type == EVENT_DIRECTION:
-                print("DEBUG: Direction Button")
-                self.direction_vertical = not self.direction_vertical
-            elif event.type == EVENT_ZOOM_MINUS:
-                print("DEBUG: scale minus")
-                self.scale /= 2
-            elif event.type == EVENT_ZOOM_PLUS:
-                print("DEBUG: scale plus")
-                self.scale *= 2
+
 
     def handle_drop_file_path(self, path: str):
         if not self.is_valid_source(path):
@@ -127,7 +111,7 @@ class App:
     def merge(self):
         if len(self.images) < 2:  # nothing to merge
             return
-        if self.direction_vertical:
+        if self.main_menu_bar.data.direction_vertical:
             merge_vertical(self.images, self.output_path, self.filename)
         else:
             merge_horizontal(self.images, self.output_path, self.filename)
