@@ -8,7 +8,7 @@ from app.events import EVENT_CONFIRM, EVENT_CANCEL
 
 class MainMenuData(BaseModel):
     direction_vertical: bool = True
-    export_type: str = "PNG"
+    export_type: str = "PNG"  # align initial type with first button image
     render_scale: float = 1.0
 
 
@@ -26,6 +26,8 @@ class MainMenuBar():
         self.button_zoom_minus.on_click = self.callback_zoom_minus
         self.button_zoom_plus = Button(self.app.scene, x = 4*(32+4), y = 0, img=self.app.textures.zoom_plus)
         self.button_zoom_plus.on_click = self.callback_zoom_plus
+        self.button_filetype = Toggle(self.app.scene, x = 5*(32+4), y = 0, images=[self.app.textures.filetype_png , self.app.textures.filetype_jpg])
+        self.button_filetype.on_click = self.callback_filetype_toggle
 
         self.data = MainMenuData()
 
@@ -35,6 +37,7 @@ class MainMenuBar():
         self.button_direction.update()
         self.button_zoom_minus.update()
         self.button_zoom_plus.update()
+        self.button_filetype.update()
 
     def draw(self):
         bar_width = self.app.scene.get_rect().width
@@ -45,6 +48,7 @@ class MainMenuBar():
         self.button_direction.draw()
         self.button_zoom_minus.draw()
         self.button_zoom_plus.draw()
+        self.button_filetype.draw()
 
     def callback_direction_toggle(self):
         self.data.direction_vertical = not self.data.direction_vertical
@@ -54,4 +58,7 @@ class MainMenuBar():
 
     def callback_zoom_plus(self):
         self.data.render_scale *= 2
+
+    def callback_filetype_toggle(self):
+        self.data.export_type = "PNG" if self.data.export_type == "JPEG" else "JPEG"
 

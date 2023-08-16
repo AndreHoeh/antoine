@@ -5,7 +5,7 @@ class Wydget():
 
     COLOR_FILL = (100, 100, 100)
     COLOR_STROKE = (180, 180, 180)
-    RADIUS = 4
+    RADIUS = 7
     STROKE_WIDTH = 1
 
     def __init__(self, scene, x: float, y: float, w: float, h: float) -> None:

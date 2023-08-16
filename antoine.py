@@ -15,9 +15,9 @@ APPLICATION_NAME = "Antoine"
 
 
 class App:
-    def __init__(self, window, textures):
+    def __init__(self, window, textures: Textures):
         self.scene = window
-        self.textures = textures
+        self.textures: Textures = textures
         self.clock = pygame.time.Clock()
         self.running = True
         self.events = []
@@ -112,9 +112,9 @@ class App:
         if len(self.images) < 2:  # nothing to merge
             return
         if self.main_menu_bar.data.direction_vertical:
-            merge_vertical(self.images, self.output_path, self.filename)
+            merge_vertical(self.images, self.output_path, self.filename, self.main_menu_bar.data.export_type)
         else:
-            merge_horizontal(self.images, self.output_path, self.filename)
+            merge_horizontal(self.images, self.output_path, self.filename, self.main_menu_bar.data.export_type)
 
     def clear_images(self):
         print("DEBUG: Clear images")

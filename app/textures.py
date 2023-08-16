@@ -27,6 +27,10 @@ class Textures:
         self.zoom_minus.fill((200, 100, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
         self.zoom_plus = pygame.image.load(f"{self.path}/zoom_plus.png").convert_alpha()
         self.zoom_plus.fill((200, 100, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.filetype_jpg = pygame.image.load(f"{self.path}/filetype_jpg.png").convert_alpha()
+        self.filetype_jpg.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.filetype_png = pygame.image.load(f"{self.path}/filetype_png.png").convert_alpha()
+        self.filetype_png.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
 
         # self.player_idle_frames = [
         #     pygame.image.load(f"{self.path}/player/idle/1.png").convert_alpha(),
