@@ -31,6 +31,14 @@ class Textures:
         self.filetype_jpg.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
         self.filetype_png = pygame.image.load(f"{self.path}/filetype_png.png").convert_alpha()
         self.filetype_png.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.alpha = pygame.image.load(f"{self.path}/alpha.png").convert_alpha()
+        self.alpha.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.beta = pygame.image.load(f"{self.path}/beta.png").convert_alpha()
+        self.beta.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.gamma = pygame.image.load(f"{self.path}/gamma.png").convert_alpha()
+        self.gamma.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.delta = pygame.image.load(f"{self.path}/delta.png").convert_alpha()
+        self.delta.fill((180, 180, 180, 0), special_flags=pygame.BLEND_RGBA_ADD)
 
         # self.player_idle_frames = [
         #     pygame.image.load(f"{self.path}/player/idle/1.png").convert_alpha(),

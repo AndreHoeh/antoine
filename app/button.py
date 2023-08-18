@@ -1,5 +1,5 @@
 import pygame
-from typing import Callable
+from typing import Callable, List
 
 class Wydget():
 
@@ -110,17 +110,59 @@ class Toggle(Wydget):
         super().__init__(scene, x, y, 10, 10)
         self._images = images
         self.rect = pygame.Rect((x, y), self._images[0].get_rect().size)
-        self._step_count = len(self._images)
-        self.step = 0
+        self._range: int = len(self._images)
+        self.index: int = 0
 
     def draw(self):
         if self._hidden:
             return
         super().draw()
-        self._scene.blit(self._images[self.step], self.rect)
+        self._scene.blit(self._images[self.index], self.rect)
 
     def handle_on_click(self):
         super().handle_on_click()
-        self.step += 1
-        if self.step >= self._step_count:
-            self.step = 0
+        self.index += 1
+        if self.index >= self._range:
+            self.index = 0
+
+
+class DropDown(Wydget):
+    def __init__(self, scene, x: float, y: float, images: List[pygame.Surface]) -> None:
+        super().__init__(scene, x, y, 10, 10)
+        self._images: List[pygame.Surface] = images
+        self.rect = pygame.Rect((x, y), self._images[0].get_rect().size)
+        self._range: int = len(self._images)
+        self.index: int = 0
+        self._element_height: int = self.rect.height
+        self.open: bool = False
+        self.buttons: List[Button] = []
+        for i in range(len(self._images)):
+            btn = Button(scene, x, y + self._element_height + i * self._element_height, img=self._images[i])
+            btn.on_click = self.select_index
+            btn.on_click_params = [i]
+            self.buttons.append(btn)
+
+    def update(self):
+        if not self._active:
+            return
+        super().update()
+        if self.open:
+            for btn in self.buttons:
+                btn.update()
+
+    def draw(self):
+        if self._hidden:
+            return
+        super().draw()
+        self._scene.blit(self._images[self.index], self.rect)
+        if self.open:
+            for btn in self.buttons:
+                btn.draw()
+
+    def handle_on_click(self):
+        super().handle_on_click()
+        self.open = not self.open
+
+    def select_index(self, index: int):
+        self.index = index
+        self.open = False
