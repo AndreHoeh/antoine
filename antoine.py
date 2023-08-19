@@ -10,7 +10,7 @@ from app.main_menue_bar import MainMenuBar
 from app.export import merge_vertical, merge_horizontal
 from app.events import EVENT_CONFIRM, EVENT_CANCEL
 
-SUPPORTED_IMAGE_TYPES = (".JPG", ".jpg", ".png")
+SUPPORTED_IMAGE_TYPES = (".JPG", ".jpg", ".png", ".jpeg", ".PNG")
 APPLICATION_NAME = "Antoine"
 
 
@@ -112,9 +112,9 @@ class App:
         if len(self.images) < 2:  # nothing to merge
             return
         if self.main_menu_bar.data.direction_vertical:
-            merge_vertical(self.images, self.output_path, self.filename, self.main_menu_bar.data.export_type)
+            merge_vertical(self.images, self.output_path, self.filename, self.main_menu_bar.get_filetype_value())
         else:
-            merge_horizontal(self.images, self.output_path, self.filename, self.main_menu_bar.data.export_type)
+            merge_horizontal(self.images, self.output_path, self.filename, self.main_menu_bar.get_filetype_value())
 
     def clear_images(self):
         print("DEBUG: Clear images")

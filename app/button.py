@@ -156,6 +156,7 @@ class DropDown(Wydget):
         super().draw()
         self._scene.blit(self._images[self.index], self.rect)
         if self.open:
+            # pygame.draw.rect(self._scene, self.COLOR_FILL, pygame.Rect(self.rect.topleft, (self.rect.width, self.rect.height + self._range * self._element_height)), border_radius=self.RADIUS)
             for btn in self.buttons:
                 btn.draw()
 

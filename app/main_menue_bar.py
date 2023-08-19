@@ -1,15 +1,20 @@
 import pygame
 
-from pydantic import BaseModel
+from dataclasses import dataclass
+from typing import Dict
 
 from app.button import Button, Toggle, DropDown
 from app.events import EVENT_CONFIRM, EVENT_CANCEL
 
-
-class MainMenuData(BaseModel):
+@dataclass
+class MainMenuData:
     direction_vertical: bool = True
-    export_type: str = "PNG"  # align initial type with first button image
     render_scale: float = 1.0
+
+file_type_mapper: Dict[int, str] = {
+    0: "PNG",
+    1: "JPEG"
+}
 
 
 class MainMenuBar:
@@ -26,19 +31,18 @@ class MainMenuBar:
         self.button_zoom_minus.on_click = self.callback_zoom_minus
         self.button_zoom_plus = Button(self.app.scene, x=4 * (32 + 4), y=0, img=self.app.textures.zoom_plus)
         self.button_zoom_plus.on_click = self.callback_zoom_plus
-        self.button_filetype = Toggle(self.app.scene, x=5 * (32 + 4), y=0, images=[self.app.textures.filetype_png, self.app.textures.filetype_jpg])
-        self.button_filetype.on_click = self.callback_filetype_toggle
-        self.dropdown = DropDown(
-            self.app.scene,
-            x=5 * (32 + 4),
-            y=0,
-            images=[
-                self.app.textures.alpha,
-                self.app.textures.beta,
-                self.app.textures.gamma,
-                self.app.textures.delta,
-            ],
-        )
+        self.button_filetype = DropDown(self.app.scene, x=5 * (32 + 4), y=0, images=[self.app.textures.filetype_png, self.app.textures.filetype_jpg])
+        # self.dropdown = DropDown(
+        #     self.app.scene,
+        #     x=6 * (32 + 4),
+        #     y=0,
+        #     images=[
+        #         self.app.textures.alpha,
+        #         self.app.textures.beta,
+        #         self.app.textures.gamma,
+        #         self.app.textures.delta,
+        #     ],
+        # )
         # self.dropdown.on_click = self.callback_filetype_toggle
 
         self.data = MainMenuData()
@@ -50,23 +54,19 @@ class MainMenuBar:
         self.button_zoom_minus.update()
         self.button_zoom_plus.update()
         self.button_filetype.update()
-        self.dropdown.update()
+        # self.dropdown.update()
 
     def draw(self):
         bar_width = self.app.scene.get_rect().width
         self.rect.update(self.rect.topleft, (bar_width, self.rect.height))
         pygame.draw.rect(self.app.scene, (40, 40, 45), self.rect)
-        self.pos_update()
         self.button_confirm.draw()
         self.button_cancel.draw()
         self.button_direction.draw()
         self.button_zoom_minus.draw()
         self.button_zoom_plus.draw()
         self.button_filetype.draw()
-        self.dropdown.draw()
-
-    def pos_update(self):
-        self.button_filetype.rect.right = self.rect.right
+        # self.dropdown.draw()
 
     def callback_direction_toggle(self):
         self.data.direction_vertical = not self.data.direction_vertical
@@ -77,5 +77,6 @@ class MainMenuBar:
     def callback_zoom_plus(self):
         self.data.render_scale *= 2
 
-    def callback_filetype_toggle(self):
-        self.data.export_type = "PNG" if self.data.export_type == "JPEG" else "JPEG"
+    def get_filetype_value(self) -> str:
+        return file_type_mapper[self.button_filetype.index]
+
